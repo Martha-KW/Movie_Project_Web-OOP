@@ -1,4 +1,3 @@
-# storage_json.py
 import json
 import os
 from istorage import IStorage
@@ -36,10 +35,16 @@ class StorageJson(IStorage):
             self._save_movies(movies)
 
     def update_movie(self, title, rating):
+        """Update the rating of an existing movie."""
         movies = self.list_movies()
-        if title in movies:
-            movies[title]["rating"] = rating
-            self._save_movies(movies)
+
+        if title not in movies:
+            print(f"Movie '{title}' not found. Cannot update rating.")
+            return False
+
+        movies[title]['rating'] = rating
+        self._save_movies(movies)
+        return True
 
     def _save_movies(self, movies):
         with open(self.file_path, 'w') as f:

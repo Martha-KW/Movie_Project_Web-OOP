@@ -1,4 +1,3 @@
-# istorage.py
 from abc import ABC, abstractmethod
 
 class IStorage(ABC):

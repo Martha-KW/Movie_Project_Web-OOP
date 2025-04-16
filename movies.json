@@ -1,1 +1,12 @@
-{}
+{
+    "Star Trek 1": {
+        "year": 1984,
+        "rating": 9.6,
+        "poster": "www.google.de"
+    },
+    "Update": {
+        "year": 2024,
+        "rating": 3.0,
+        "poster": ""
+    }
+}

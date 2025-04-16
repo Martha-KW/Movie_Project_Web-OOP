@@ -1,21 +1,37 @@
+import os
+import json
 from storage_json import StorageJson
 
-# Create storage instance with a test file
-storage = StorageJson("test_movies.json")
+def test_add_and_list_movie(tmp_path):
+    test_file = tmp_path / "test_movies.json"
+    storage = StorageJson(test_file)
 
-# Add a movie
-storage.add_movie("Inception", 2010, 8.8, "https://example.com/inception.jpg")
+    # Add a movie
+    storage.add_movie("Inception", 2010, 8.8, "http://poster.url")
 
-# List movies
-print("Movies after adding Inception:")
-print(storage.list_movies())
+    # Check if it's listed
+    movies = storage.list_movies()
+    assert "Inception" in movies
+    assert movies["Inception"]["year"] == 2010
+    assert movies["Inception"]["rating"] == 8.8
+    assert movies["Inception"]["poster"] == "http://poster.url"
 
-# Update the movie
-storage.update_movie("Inception", 9.0)
-print("\nMovies after updating rating:")
-print(storage.list_movies())
+def test_update_movie(tmp_path):
+    test_file = tmp_path / "test_movies.json"
+    storage = StorageJson(test_file)
 
-# Delete the movie
-storage.delete_movie("Inception")
-print("\nMovies after deleting Inception:")
-print(storage.list_movies())
+    storage.add_movie("Matrix", 1999, 9.0, "http://matrix.poster")
+    storage.update_movie("Matrix", 9.5)
+
+    movies = storage.list_movies()
+    assert movies["Matrix"]["rating"] == 9.5
+
+
+def test_update_nonexistent_movie(tmp_path, capsys):
+    test_file = tmp_path / "test_movies.json"
+    storage = StorageJson(test_file)
+
+    storage.update_movie("Nonexistent", 7.0)
+
+    captured = capsys.readouterr()
+    assert "not found" in captured.out
