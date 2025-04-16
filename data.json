@@ -1,0 +1,26 @@
+{
+    "The Boat": {
+        "year": 1971,
+        "rating": 9.9
+    },
+    "ET": {
+        "year": 1983,
+        "rating": 7.5
+    },
+    "Forrest Gump": {
+        "year": 1994,
+        "rating": 4.7
+    },
+    "Casablanca": {
+        "year": 1960,
+        "rating": 7.0
+    },
+    "second best": {
+        "year": 1900,
+        "rating": 9.9
+    },
+    "second worst": {
+        "year": 2024,
+        "rating": 4.7
+    }
+}
