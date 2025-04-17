@@ -1,6 +1,7 @@
 import csv
 import os
 from istorage import IStorage
+from utils import safe_float, safe_str, safe_int
 
 class StorageCsv(IStorage):
     """
@@ -17,16 +18,17 @@ class StorageCsv(IStorage):
 
     def list_movies(self):
         movies = {}
-        with open(self.file_path, mode='r', newline='') as f:
+        with open(self.file_path, newline='') as f:
             reader = csv.DictReader(f)
             for row in reader:
-                title = row["title"]
+                title = safe_str(row.get("title", ""))
                 movies[title] = {
-                    "year": int(row["year"]),
-                    "rating": float(row["rating"]),
-                    "poster": row["poster"]
+                    "year": safe_int(row.get("year")),
+                    "rating": safe_float(row.get("rating", "")),
+                    "poster": safe_str(row.get("poster", ""))
                 }
         return movies
+
 
     def add_movie(self, title, year, rating, poster):
         movies = self.list_movies()
@@ -66,7 +68,7 @@ class StorageCsv(IStorage):
             for title, data in movies.items():
                 writer.writerow({
                     "title": title,
-                    "year": data["year"],
-                    "rating": data["rating"],
-                    "poster": data["poster"]
+                    "year": data["year"] if data["year"] is not None else "",
+                    "rating": data["rating"] if data["rating"] is not None else "",
+                    "poster": safe_str(data.get("poster", ""))
                 })

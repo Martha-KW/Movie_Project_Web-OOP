@@ -1,9 +1,12 @@
+from omdb_client import OmdbClient
+
 class MovieApp:
     def __init__(self, storage):
         """
         Initialize the movie app with a storage backend (e.g., JSON, CSV).
         """
         self._storage = storage
+        self.omdb_client = OmdbClient()
 
     def _command_list_movies(self):
         """
@@ -18,11 +21,20 @@ class MovieApp:
         Add a new movie based on user input.
         """
         title = input("Enter movie title: ")
-        year = int(input("Enter release year: "))
-        rating = float(input("Enter rating: "))
-        poster = input("Enter poster URL: ")
-        self._storage.add_movie(title, year, rating, poster)
-        print(f"Movie '{title}' added.")
+        movie_data = self.omdb_client.fetch_movie(title)
+
+        if not movie_data:
+            input("Press Enter to continue.")
+            return
+
+        self._storage.add_movie(
+            movie_data["title"],
+            movie_data["year"],
+            movie_data["rating"],
+            movie_data["poster"]
+        )
+        print(f"Movie '{movie_data['title']}' added.")
+        input("Press Enter to continue.")
 
     def _command_delete_movie(self):
         """

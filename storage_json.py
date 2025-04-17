@@ -1,6 +1,7 @@
 import json
 import os
 from istorage import IStorage
+from utils import safe_float, safe_str, safe_int
 
 
 class StorageJson(IStorage):
@@ -16,8 +17,24 @@ class StorageJson(IStorage):
                 json.dump({}, f)
 
     def list_movies(self):
-        with open(self.file_path, 'r') as f:
-            return json.load(f)
+        try:
+            with open(self.file_path, "r") as f:
+                raw_data = json.load(f)
+
+            return {
+                title: {
+                    "year": safe_int(data.get("year")),
+                    "rating": safe_float(data.get("rating")),
+                    "poster": safe_str(data.get("poster"))
+                }
+                for title, data in raw_data.items()
+            }
+        except FileNotFoundError:
+            print(f"Warning: {self.file_path} not found.")
+            return {}
+        except json.JSONDecodeError:
+            print("Error: Could not decode JSON.")
+            return {}
 
     def add_movie(self, title, year, rating, poster):
         movies = self.list_movies()
