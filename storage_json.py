@@ -25,7 +25,8 @@ class StorageJson(IStorage):
                 title: {
                     "year": safe_int(data.get("year")),
                     "rating": safe_float(data.get("rating")),
-                    "poster": safe_str(data.get("poster"))
+                    "poster": safe_str(data.get("poster")),
+                    "note": data.get("note", "")
                 }
                 for title, data in raw_data.items()
             }
@@ -43,13 +44,13 @@ class StorageJson(IStorage):
             "rating": rating,
             "poster": poster
         }
-        self._save_movies(movies)
+        self.save_movies(movies)
 
     def delete_movie(self, title):
         movies = self.list_movies()
         if title in movies:
             del movies[title]
-            self._save_movies(movies)
+            self.save_movies(movies)
 
     def update_movie(self, title, rating):
         """Update the rating of an existing movie."""
@@ -60,9 +61,9 @@ class StorageJson(IStorage):
             return False
 
         movies[title]['rating'] = rating
-        self._save_movies(movies)
+        self.save_movies(movies)
         return True
 
-    def _save_movies(self, movies):
+    def save_movies(self, movies):
         with open(self.file_path, 'w') as f:
             json.dump(movies, f, indent=4)

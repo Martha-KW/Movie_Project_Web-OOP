@@ -1,4 +1,6 @@
 from omdb_client import OmdbClient
+import statistics
+import random
 
 class MovieApp:
     def __init__(self, storage):
@@ -14,7 +16,15 @@ class MovieApp:
         """
         movies = self._storage.list_movies()
         for title, details in movies.items():
-            print(f"{title} ({details['year']}) - Rating: {details['rating']}, Poster: {details['poster']}")
+            note = details.get("note", "")
+            note_str = f"Note: {note}" if note else ""
+
+            print(f"\n{title} ({details['year']})\n"
+                  f"  Rating: {details['rating']}\n"
+                  f"  Poster: {details['poster']}")
+            if note_str:
+                print(f"  {note_str}")
+            print("-" * 40)
 
     def _command_add_movie(self):
         """
@@ -38,48 +48,141 @@ class MovieApp:
 
     def _command_delete_movie(self):
         """
-        Delete a movie based on user input.
+        Delete a saved movie based on user input.
         """
-        title = input("Enter movie title to delete: ")
-        self._storage.delete_movie(title)
-        print(f"Movie '{title}' deleted.")
-
-    def _command_update_movie(self):
-        """
-        Update a movie rating.
-        """
-        title = input("Enter movie title to update: ")
+        title = input("Enter the movie title to delete: ").strip().lower()
         movies = self._storage.list_movies()
 
         if title not in movies:
-            print(f"Movie '{title}' doesn't exist!")
-            input("Press Enter to continue.")
+            print(f"Movie '{title}' not found.")
             return
 
-        rating = float(input("Enter new rating: "))
-        self._storage.update_movie(title, rating)
-        print(f"Rating for '{title}' successfully updated.")
+        self._storage.delete_movie(title)
+        print(f"Movie '{title}' deleted.")
         input("Press Enter to continue.")
+
+    def _command_update_movie(self):
+        """
+        Adds a personal comment to a movie and optionally updates rating.
+        """
+        title_input = input("Enter the movie title to add a note: ").strip().lower()
+        movies = self._storage.list_movies()
+
+        found_title = None
+        for title in movies:
+            if title.lower() == title_input:
+                found_title = title
+                break
+
+        if not found_title:
+            print(f"Movie '{title_input}' not found. Adding a note is impossible.")
+            return
+
+        note = input("Enter your note for the movie: ").strip()
+        movies[found_title]["note"] = note
+        self._storage.save_movies(movies)
+        print(f"Note for '{found_title}' added successfully!")
+
+        input("Press Enter to continue.")
+
+    def _command_show_stats(self):
+        """Generates statistical info about the saved movies. Median and average rating,
+        the best and the worst movie. Ignores Movies without stats.
+        """
+        movies = self._storage.list_movies()
+
+        # include only movies with a rating
+        rated_movies = {title: data for title, data in movies.items()
+                        if isinstance(data.get("rating"), (int, float))}
+
+        if not rated_movies:
+            print("No movies with ratings to analyze.")
+            return
+
+        ratings = [data["rating"] for data in rated_movies.values()]
+
+        avg = statistics.mean(ratings)
+        median = statistics.median(ratings)
+
+        best = max(rated_movies.items(), key=lambda item: item[1]["rating"])
+        worst = min(rated_movies.items(), key=lambda item: item[1]["rating"])
+
+        print(f"\nAverage rating: {avg:.2f}")
+        print(f"Median rating: {median:.2f}")
+        print(f"Best movie: {best[0]}, {best[1]['rating']:.2f}")
+        print(f"Worst movie: {worst[0]}, {worst[1]['rating']:.2f}")
+        input("\nPress enter to continue.")
+
+    def _command_random_movie(self):
+        """Takes one random movie from the saved ones and displays it to the user."""
+
+        movies = self._storage.list_movies()
+        if not movies:
+            print("No movies available.")
+            return
+        title, data = random.choice(list(movies.items()))
+        print(f"Your movie for tonight: {title}, it's rated {data['rating']}")
+
+
+    def _command_search_movie(self):
+        query = input("Enter part of movie name: ").lower()
+        movies = self._storage.list_movies()
+        found = False
+
+        for title, data in movies.items():
+            if query in title.lower():
+                print(f"{title}, Rating: {data.get('rating', 'N/A')}")
+                found = True
+
+        if not found:
+            print("No matching movies found.")
+
+        input("Press enter to continue")
+
+
+    def _command_sort_by_rating(self):
+        movies = self._storage.list_movies()
+        sorted_movies = sorted(
+            ((title, data) for title, data in movies.items() if data["rating"] is not None),
+            key=lambda item: item[1]["rating"],
+            reverse=True
+        )
+        print("\nMovies sorted by rating:")
+        for title, data in sorted_movies:
+            print(f"{title}: {data['rating']}")
+        input("\nPress enter to continue")
+
 
     def run(self):
         """
         Run the main menu loop.
         """
         commands = {
+            "0": exit,
             "1": self._command_list_movies,
             "2": self._command_add_movie,
             "3": self._command_delete_movie,
             "4": self._command_update_movie,
-            "5": exit
-        }
+            "5": self._command_show_stats,
+            "6": self._command_random_movie,
+            "7": self._command_search_movie,
+            "8": self._command_sort_by_rating,
 
+        }
+        # add later to commands: "9": self._command_generate_website,
         while True:
-            print("\n== Movie App Menu ==")
+            print("********** My Movies Database **********")
+            print("\nMenu:")
+            print("0. Exit")
             print("1. List movies")
             print("2. Add movie")
             print("3. Delete movie")
             print("4. Update movie")
-            print("5. Exit")
+            print("5. Stats")
+            print("6. Random movie")
+            print("7. Search movie")
+            print("8. Movies sorted by rating")
+            # print("9. Generate website")
 
             choice = input("Choose an option: ")
             command = commands.get(choice)
