@@ -24,11 +24,17 @@ class OmdbClient:
                 print(f"Movie '{title}' not found in OMDb.")
                 return None
 
+            year_raw = data.get("Year", "")
+            try:
+                year = int(year_raw[:4]) if year_raw and year_raw[:4].isdigit() else None
+            except ValueError:
+                year = None
+
             return {
                 "title": safe_str(data.get("Title")),
-            "year": int(data["Year"]) if data["Year"] != "N/A" else None,
-            "rating": safe_float(data.get("imdbRating")),
-            "poster": safe_str(data.get("Poster"))
+                "year": year,
+                "rating": safe_float(data.get("imdbRating")),
+                "poster": safe_str(data.get("Poster"))
             }
         except requests.exceptions.ConnectionError:
             print("🌐 Could not connect to OMDb API. Please check your internet connection.")

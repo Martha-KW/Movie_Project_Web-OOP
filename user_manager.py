@@ -1,0 +1,67 @@
+import json
+import os
+from hashlib import sha256
+
+class UserManager:
+    USERS_FILE = "users.json"
+
+    def __init__(self):
+        if not os.path.exists(self.USERS_FILE):
+            with open(self.USERS_FILE, "w") as f:
+                json.dump({}, f)
+        with open(self.USERS_FILE, "r") as f:
+            self.users = json.load(f)
+
+    def _save_users(self):
+        with open(self.USERS_FILE, "w") as f:
+            json.dump(self.users, f, indent=2)
+
+    def hash_password(self, password):
+        return sha256(password.encode()).hexdigest()
+
+    def create_user(self):
+        print("--- Create New User ---")
+        while True:
+            username = input("Choose a username: ").strip().lower()
+            if username in self.users:
+                print("Username already taken. Try another one.")
+            else:
+                break
+
+        while True:
+            format_choice = input("Choose storage format (json/csv): ").strip().lower()
+            if format_choice in ["json", "csv"]:
+                break
+            else:
+                print("Invalid format. Choose 'json' or 'csv'.")
+
+        password = input("Choose a password: ").strip()
+        password_hash = self.hash_password(password)
+
+        file_name = f"{username}.{format_choice}"
+
+        self.users[username] = {
+            "password_hash": password_hash,
+            "format": format_choice,
+            "file": file_name
+        }
+        self._save_users()
+
+        print(f"User '{username}' created successfully.\n")
+        return username, format_choice, file_name
+
+    def login_user(self):
+        print("--- Login ---")
+        username = input("Enter your username: ").strip().lower()
+        if username not in self.users:
+            print("User not found.")
+            return None
+
+        password = input("Enter your password: ").strip()
+        if self.hash_password(password) != self.users[username]["password_hash"]:
+            print("Incorrect password.")
+            return None
+
+        print(f"Welcome back, {username}!\n")
+        user_data = self.users[username]
+        return username, user_data["format"], user_data["file"]
