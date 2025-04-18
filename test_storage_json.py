@@ -1,6 +1,4 @@
-import os
-import json
-from storage_json import StorageJson
+from storage.storage_json import StorageJson
 
 def test_add_and_list_movie(tmp_path):
     test_file = tmp_path / "test_movies.json"

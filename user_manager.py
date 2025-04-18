@@ -3,7 +3,7 @@ import os
 from hashlib import sha256
 
 class UserManager:
-    USERS_FILE = "users.json"
+    USERS_FILE = os.path.join("data", "users.json")
 
     def __init__(self):
         if not os.path.exists(self.USERS_FILE):

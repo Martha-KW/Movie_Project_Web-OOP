@@ -1,13 +1,12 @@
 {
-  "first": {
+  "1": {
     "password_hash": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
     "format": "csv",
-    "file": "first.csv"
+    "file": "1.csv"
   },
-  "jason": {
+  "2": {
     "password_hash": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
     "format": "json",
-    "file": "jason.json"
+    "file": "2.json"
   }
-
 }

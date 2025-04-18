@@ -1,6 +1,6 @@
 import json
 import os
-from istorage import IStorage
+from .istorage import IStorage
 from utils import safe_float, safe_str, safe_int
 
 
@@ -11,7 +11,11 @@ class StorageJson(IStorage):
     """
 
     def __init__(self, file_path):
-        self.file_path = file_path
+        # Fügt "data/" vor dem Dateinamen ein
+        self.file_path = os.path.join("data", file_path)
+        # Erstellt den Ordner "data", falls nicht vorhanden
+        os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
+        # Erstellt die JSON-Datei mit leerem Dict, falls nicht vorhanden
         if not os.path.exists(self.file_path):
             with open(self.file_path, 'w', encoding="utf-8") as f:
                 json.dump({}, f)
@@ -67,3 +71,4 @@ class StorageJson(IStorage):
     def save_movies(self, movies):
         with open(self.file_path, 'w', encoding="utf-8") as f:
             json.dump(movies, f, indent=4)
+            f.flush()

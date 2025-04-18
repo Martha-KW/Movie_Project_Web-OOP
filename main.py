@@ -1,6 +1,6 @@
 from movie_app import MovieApp
-from storage_json import StorageJson
-from storage_csv import StorageCsv
+from storage.storage_json import StorageJson
+from storage.storage_csv import StorageCsv
 from user_manager import UserManager
 
 def main():

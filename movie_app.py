@@ -50,15 +50,22 @@ class MovieApp:
         """
         Delete a saved movie based on user input.
         """
-        title = input("Enter the movie title to delete: ").strip().lower()
+        title_input = input("Enter the movie title to delete: ").strip().lower()
         movies = self._storage.list_movies()
 
-        if title not in movies:
-            print(f"Movie '{title}' not found.")
+        # Case-insensitive und Whitespace-bereinigt suchen
+        found_title = None
+        for stored_title in movies:
+            if stored_title.lower().strip() == title_input:
+                found_title = stored_title  # Behalte Original-Schreibweise!
+                break
+
+        if not found_title:
+            print(f"Movie '{title_input}' not found.")
             return
 
-        self._storage.delete_movie(title)
-        print(f"Movie '{title}' deleted.")
+        self._storage.delete_movie(found_title)  # Lösche mit Original-Schreibweise
+        print(f"Movie '{found_title}' deleted.")
         input("Press Enter to continue.")
 
     def _command_update_movie(self):

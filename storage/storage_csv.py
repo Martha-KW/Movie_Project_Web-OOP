@@ -1,6 +1,6 @@
 import csv
 import os
-from istorage import IStorage
+from .istorage import IStorage
 from utils import safe_float, safe_str, safe_int
 
 class StorageCsv(IStorage):
@@ -10,7 +10,11 @@ class StorageCsv(IStorage):
     """
 
     def __init__(self, file_path):
-        self.file_path = file_path
+        # Fügt "data/" vor dem Dateinamen ein (plattformunabhängig)
+        self.file_path = os.path.join("data", file_path)
+        # Erstellt den Ordner "data", falls nicht vorhanden
+        os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
+        # Erstellt die CSV-Datei mit Header, falls nicht vorhanden
         if not os.path.exists(self.file_path):
             with open(self.file_path, mode='w', encoding="utf-8", newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=["title", "year", "rating", "poster"])
@@ -46,11 +50,24 @@ class StorageCsv(IStorage):
             })
 
     def delete_movie(self, title):
+        """
+        Deletes a movie by title (case-insensitive search).
+        Keeps your original logic but improves title matching.
+        """
         movies = self.list_movies()
-        if title not in movies:
-            print(f"Movie '{title}' not found.")
+
+        # Case-insensitive und Whitespace-bereinigte Suche
+        found_title = None
+        for stored_title in movies:
+            if stored_title.lower().strip() == title.lower().strip():
+                found_title = stored_title  # Behalte Original-Schreibweise
+                break
+
+        if not found_title:
+            print(f"Movie '{title}' not found.")  # Deine bestehende Fehlermeldung
             return
-        del movies[title]
+
+        del movies[found_title]  # Lösche mit Original-Schreibweise
         self.save_movies(movies)
 
     def update_movie(self, title, rating):
@@ -75,3 +92,4 @@ class StorageCsv(IStorage):
                     "poster": safe_str(data.get("poster", "")),
                     "note": data.get("note", "")
                 })
+            f.flush()
