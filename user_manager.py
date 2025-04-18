@@ -7,13 +7,13 @@ class UserManager:
 
     def __init__(self):
         if not os.path.exists(self.USERS_FILE):
-            with open(self.USERS_FILE, "w") as f:
+            with open(self.USERS_FILE, "w", encoding="utf-8") as f:
                 json.dump({}, f)
-        with open(self.USERS_FILE, "r") as f:
+        with open(self.USERS_FILE, "r", encoding="utf-8") as f:
             self.users = json.load(f)
 
     def _save_users(self):
-        with open(self.USERS_FILE, "w") as f:
+        with open(self.USERS_FILE, "w", encoding="utf-8") as f:
             json.dump(self.users, f, indent=2)
 
     def hash_password(self, password):

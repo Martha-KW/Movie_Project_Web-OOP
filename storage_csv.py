@@ -12,13 +12,13 @@ class StorageCsv(IStorage):
     def __init__(self, file_path):
         self.file_path = file_path
         if not os.path.exists(self.file_path):
-            with open(self.file_path, mode='w', newline='') as f:
+            with open(self.file_path, mode='w', encoding="utf-8", newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=["title", "year", "rating", "poster"])
                 writer.writeheader()
 
     def list_movies(self):
         movies = {}
-        with open(self.file_path, newline='') as f:
+        with open(self.file_path, encoding="utf-8", newline='') as f:
             reader = csv.DictReader(f)
             for row in reader:
                 title = safe_str(row.get("title", ""))
@@ -36,7 +36,7 @@ class StorageCsv(IStorage):
         if title in movies:
             print(f"Movie '{title}' already exists.")
             return
-        with open(self.file_path, mode='a', newline='') as f:
+        with open(self.file_path, mode='a', encoding="utf-8", newline='') as f:
             writer = csv.DictWriter(f, fieldnames=["title", "year", "rating", "poster"])
             writer.writerow({
                 "title": title,
@@ -63,7 +63,7 @@ class StorageCsv(IStorage):
         print(f"Updated rating for movie '{title}' to {rating}.")
 
     def save_movies(self, movies):
-        with open(self.file_path, mode='w', newline='') as f:
+        with open(self.file_path, mode='w', encoding="utf-8", newline='') as f:
             writer = csv.DictWriter(f, fieldnames=["title", "year", "rating", "poster",
                                                    "note" ])
             writer.writeheader()

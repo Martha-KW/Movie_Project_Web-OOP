@@ -152,6 +152,41 @@ class MovieApp:
             print(f"{title}: {data['rating']}")
         input("\nPress enter to continue")
 
+    def _command_generate_website(self):
+        movies = self._storage.list_movies()
+
+        print("🌐 Generating website...")
+
+        # Lade das HTML-Template
+        with open("templates/index_template.html", "r", encoding="utf-8") as f:
+            template = f.read()
+
+        # Ersetze den Titel
+        template = template.replace("__TEMPLATE_TITLE__", "My Movie App")
+
+        # Baue das Movie-HTML
+        movie_items = []
+        for title, data in movies.items():  # <- das ist wichtig!
+            item = f"""
+            <li>
+                <div class="movie">
+                    <img class="movie-poster" src="{data.get('poster', '')}" />
+                    <div class="movie-title">{title}</div>
+                    <div class="movie-year">{data.get('year')}</div>
+                </div>
+            </li>
+            """
+            movie_items.append(item)
+
+        movie_grid = "\n".join(movie_items)
+        template = template.replace("__TEMPLATE_MOVIE_GRID__", movie_grid)
+
+        # Speichere das Ergebnis in static/index.html
+        with open("static/index.html", "w", encoding="utf-8") as f:
+            f.write(template)
+
+        print("✅ Website generated! Open static/index.html in your browser.")
+
 
     def run(self):
         """
@@ -167,9 +202,9 @@ class MovieApp:
             "6": self._command_random_movie,
             "7": self._command_search_movie,
             "8": self._command_sort_by_rating,
-
+            "9": self._command_generate_website,
         }
-        # add later to commands: "9": self._command_generate_website,
+
         while True:
             print("********** My Movies Database **********")
             print("\nMenu:")
@@ -182,7 +217,7 @@ class MovieApp:
             print("6. Random movie")
             print("7. Search movie")
             print("8. Movies sorted by rating")
-            # print("9. Generate website")
+            print("9. Generate website")
 
             choice = input("Choose an option: ")
             command = commands.get(choice)

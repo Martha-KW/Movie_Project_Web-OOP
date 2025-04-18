@@ -13,12 +13,12 @@ class StorageJson(IStorage):
     def __init__(self, file_path):
         self.file_path = file_path
         if not os.path.exists(self.file_path):
-            with open(self.file_path, 'w') as f:
+            with open(self.file_path, 'w', encoding="utf-8") as f:
                 json.dump({}, f)
 
     def list_movies(self):
         try:
-            with open(self.file_path, "r") as f:
+            with open(self.file_path, "r", encoding="utf-8") as f:
                 raw_data = json.load(f)
 
             return {
@@ -65,5 +65,5 @@ class StorageJson(IStorage):
         return True
 
     def save_movies(self, movies):
-        with open(self.file_path, 'w') as f:
+        with open(self.file_path, 'w', encoding="utf-8") as f:
             json.dump(movies, f, indent=4)
