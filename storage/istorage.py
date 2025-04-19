@@ -11,6 +11,7 @@ class IStorage(ABC):
         """Returns all stored movies as a dictionary."""
         pass
 
+
     @abstractmethod
     def add_movie(self, title, year, rating, poster):
         """
@@ -24,6 +25,7 @@ class IStorage(ABC):
         """
         pass
 
+
     @abstractmethod
     def delete_movie(self, title):
         """
@@ -31,16 +33,5 @@ class IStorage(ABC):
 
         Args:
             title (str): Title of the movie to delete.
-        """
-        pass
-
-    @abstractmethod
-    def update_movie(self, title, rating):
-        """
-        Updates the rating of a movie.
-
-        Args:
-            title (str): Title of the movie.
-            rating (float): New rating.
         """
         pass

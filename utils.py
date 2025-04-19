@@ -11,6 +11,7 @@ def safe_float(value):
     except ValueError:
         return None
 
+
 def safe_int(value):
     try:
         return int(value) if str(value).isdigit() else None

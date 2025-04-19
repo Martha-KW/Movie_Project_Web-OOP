@@ -4,10 +4,12 @@ from storage.storage_csv import StorageCsv
 from user_manager import UserManager
 
 def main():
+    """This manages the initial user interaction: login or register.
+    For a new user it creates a new json or csv file as chosen.
+    Then it initializes the movie app and the loop.
+    """
     user_manager = UserManager()
     print("Welcome to the Movie App!\n")
-
-    user_data = None
 
     while True:
         choice = input("Do you want to (1) Login or (2) Register? ").strip()
@@ -36,7 +38,7 @@ def main():
 
     print(f"Welcome, {username}! Loading your movie data from {file_name}...\n")
 
-    app = MovieApp(storage)
+    app = MovieApp(storage, username)
     app.run()
 
 if __name__ == "__main__":

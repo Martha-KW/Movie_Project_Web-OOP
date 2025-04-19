@@ -10,7 +10,9 @@ class OmdbClient:
         self.api_key = os.getenv("OMDB_API_KEY")
         self.base_url = "http://www.omdbapi.com/"
 
+
     def fetch_movie(self, title):
+        """"Sends get request with the title as parameter to omdb api"""
         params = {
             "apikey": self.api_key,
             "t": title

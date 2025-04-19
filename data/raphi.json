@@ -1,0 +1,31 @@
+{
+    "Aquaman": {
+        "year": 2018,
+        "rating": 6.8,
+        "poster": "https://m.media-amazon.com/images/M/MV5BOTk5ODg0OTU5M15BMl5BanBnXkFtZTgwMDQ3MDY3NjM@._V1_SX300.jpg",
+        "note": ""
+    },
+    "Harry Potter and the Deathly Hallows: Part 2": {
+        "year": 2011,
+        "rating": 8.1,
+        "poster": "https://m.media-amazon.com/images/M/MV5BOTA1Mzc2N2ItZWRiNS00MjQzLTlmZDQtMjU0NmY1YWRkMGQ4XkEyXkFqcGc@._V1_SX300.jpg",
+        "note": ""
+    },
+    "60 Millionen f\u00fcr Phant\u00e1sien - Wie die 'unendliche Geschichte' ins Kino kam": {
+        "year": 1984,
+        "rating": 8.9,
+        "poster": "No info available",
+        "note": ""
+    },
+    "Terminator 2: Judgment Day": {
+        "year": 1991,
+        "rating": 8.6,
+        "poster": "https://m.media-amazon.com/images/M/MV5BNGMyMGNkMDUtMjc2Ni00NWFlLTgyODEtZTY2MzBiZTg0OWZiXkEyXkFqcGc@._V1_SX300.jpg",
+        "note": ""
+    },
+    "The Hobbit: An Unexpected Journey": {
+        "year": 2012,
+        "rating": 7.8,
+        "poster": "https://m.media-amazon.com/images/M/MV5BMTcwNTE4MTUxMl5BMl5BanBnXkFtZTcwMDIyODM4OA@@._V1_SX300.jpg"
+    }
+}

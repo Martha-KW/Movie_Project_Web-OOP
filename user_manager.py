@@ -6,20 +6,34 @@ class UserManager:
     USERS_FILE = os.path.join("data", "users.json")
 
     def __init__(self):
+        """
+        Initializes the user manager by loading existing users
+        from a JSON file or creating a new end empty one if it doesn't exist.
+        """
+
         if not os.path.exists(self.USERS_FILE):
             with open(self.USERS_FILE, "w", encoding="utf-8") as f:
                 json.dump({}, f)
         with open(self.USERS_FILE, "r", encoding="utf-8") as f:
             self.users = json.load(f)
 
+
     def _save_users(self):
+        """Saves the current user dict to a json file"""
         with open(self.USERS_FILE, "w", encoding="utf-8") as f:
             json.dump(self.users, f, indent=2)
 
+
     def hash_password(self, password):
+        """Hashes the password text from user input with SHA-256 for safety"""
         return sha256(password.encode()).hexdigest()
 
+
     def create_user(self):
+        """
+        Registration of a new user. Prompts the user name input, file format and
+        password. Stores the choices in the users.json file.
+        """
         print("--- Create New User ---")
         while True:
             username = input("Choose a username: ").strip().lower()
@@ -50,7 +64,12 @@ class UserManager:
         print(f"User '{username}' created successfully.\n")
         return username, format_choice, file_name
 
+
     def login_user(self):
+        """
+        Manages login for existing users. Checks if username exists, and if password is
+        correct.
+        """
         print("--- Login ---")
         username = input("Enter your username: ").strip().lower()
         if username not in self.users:

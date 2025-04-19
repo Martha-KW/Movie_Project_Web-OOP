@@ -3,12 +3,14 @@ import statistics
 import random
 
 class MovieApp:
-    def __init__(self, storage):
+    def __init__(self, storage, username):
         """
         Initialize the movie app with a storage backend (e.g., JSON, CSV).
         """
         self._storage = storage
         self.omdb_client = OmdbClient()
+        self.username = username
+
 
     def _command_list_movies(self):
         """
@@ -25,6 +27,11 @@ class MovieApp:
             if note_str:
                 print(f"  {note_str}")
             print("-" * 40)
+
+
+    def get_movies(self):
+        return self._storage.list_movies()
+
 
     def _command_add_movie(self):
         """
@@ -46,6 +53,7 @@ class MovieApp:
         print(f"Movie '{movie_data['title']}' added.")
         input("Press Enter to continue.")
 
+
     def _command_delete_movie(self):
         """
         Delete a saved movie based on user input.
@@ -53,20 +61,21 @@ class MovieApp:
         title_input = input("Enter the movie title to delete: ").strip().lower()
         movies = self._storage.list_movies()
 
-        # Case-insensitive und Whitespace-bereinigt suchen
+        # Search case-insensitive und remove whitespace
         found_title = None
         for stored_title in movies:
             if stored_title.lower().strip() == title_input:
-                found_title = stored_title  # Behalte Original-Schreibweise!
+                found_title = stored_title
                 break
 
         if not found_title:
             print(f"Movie '{title_input}' not found.")
             return
 
-        self._storage.delete_movie(found_title)  # Lösche mit Original-Schreibweise
+        self._storage.delete_movie(found_title)
         print(f"Movie '{found_title}' deleted.")
         input("Press Enter to continue.")
+
 
     def _command_update_movie(self):
         """
@@ -91,6 +100,7 @@ class MovieApp:
         print(f"Note for '{found_title}' added successfully!")
 
         input("Press Enter to continue.")
+
 
     def _command_show_stats(self):
         """Generates statistical info about the saved movies. Median and average rating,
@@ -119,6 +129,7 @@ class MovieApp:
         print(f"Best movie: {best[0]}, {best[1]['rating']:.2f}")
         print(f"Worst movie: {worst[0]}, {worst[1]['rating']:.2f}")
         input("\nPress enter to continue.")
+
 
     def _command_random_movie(self):
         """Takes one random movie from the saved ones and displays it to the user."""
@@ -159,6 +170,7 @@ class MovieApp:
             print(f"{title}: {data['rating']}")
         input("\nPress enter to continue")
 
+
     def _command_generate_website(self):
         movies = self._storage.list_movies()
 
@@ -168,10 +180,11 @@ class MovieApp:
         with open("templates/index_template.html", "r", encoding="utf-8") as f:
             template = f.read()
 
-        # Ersetze den Titel
-        template = template.replace("__TEMPLATE_TITLE__", "My Movie App")
+        # Generate the dynamic Page title
+        template = template.replace("__TEMPLATE_TITLE__",
+                                    f"{self.username.capitalize()}s personal 🎥 App")
 
-        # Baue das Movie-HTML
+        # Create the html code for personal page
         movie_items = []
         for title, data in movies.items():
             poster = data.get('poster', '')
@@ -187,6 +200,7 @@ class MovieApp:
             </div>
             <div class="movie-title">{title}</div>
             <div class="movie-year">{year}</div>
+            <div class="movie-rating">⭐ {data.get('rating', 'N/A')}</div>
             </div>
             </li>
             """
@@ -195,7 +209,7 @@ class MovieApp:
         movie_grid = "\n".join(movie_items)
         template = template.replace("__TEMPLATE_MOVIE_GRID__", movie_grid)
 
-        # Speichere das Ergebnis in static/index.html
+        # saves the generated html in static/index.html
         with open("static/index.html", "w", encoding="utf-8") as f:
             f.write(template)
 

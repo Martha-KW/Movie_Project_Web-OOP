@@ -10,17 +10,17 @@ class StorageCsv(IStorage):
     """
 
     def __init__(self, file_path):
-        # Fügt "data/" vor dem Dateinamen ein (plattformunabhängig)
+        """Generates a file path and csv file if it is not already existing"""
         self.file_path = os.path.join("data", file_path)
-        # Erstellt den Ordner "data", falls nicht vorhanden
         os.makedirs(os.path.dirname(self.file_path), exist_ok=True)
-        # Erstellt die CSV-Datei mit Header, falls nicht vorhanden
         if not os.path.exists(self.file_path):
             with open(self.file_path, mode='w', encoding="utf-8", newline='') as f:
                 writer = csv.DictWriter(f, fieldnames=["title", "year", "rating", "poster"])
                 writer.writeheader()
 
+
     def list_movies(self):
+        """Generates the movie listing for printing it"""
         movies = {}
         with open(self.file_path, encoding="utf-8", newline='') as f:
             reader = csv.DictReader(f)
@@ -36,6 +36,7 @@ class StorageCsv(IStorage):
 
 
     def add_movie(self, title, year, rating, poster):
+        """Adds a new movie to the csv file"""
         movies = self.list_movies()
         if title in movies:
             print(f"Movie '{title}' already exists.")
@@ -49,37 +50,31 @@ class StorageCsv(IStorage):
                 "poster": poster
             })
 
+
     def delete_movie(self, title):
         """
-        Deletes a movie by title (case-insensitive search).
-        Keeps your original logic but improves title matching.
+        Deletes a movie by title (case-insensitive search) from csv file.
         """
         movies = self.list_movies()
 
-        # Case-insensitive und Whitespace-bereinigte Suche
         found_title = None
         for stored_title in movies:
             if stored_title.lower().strip() == title.lower().strip():
-                found_title = stored_title  # Behalte Original-Schreibweise
+                found_title = stored_title
                 break
 
         if not found_title:
-            print(f"Movie '{title}' not found.")  # Deine bestehende Fehlermeldung
+            print(f"Movie '{title}' not found.")
             return
 
-        del movies[found_title]  # Lösche mit Original-Schreibweise
+        del movies[found_title]
         self.save_movies(movies)
 
-    def update_movie(self, title, rating):
-        movies = self.list_movies()
-        if title not in movies:
-            print(f"Movie '{title}' not found. Cannot update rating.")
-            return
-        movies[title]["rating"] = rating
-        self.save_movies(movies)
-        print(f"Updated rating for movie '{title}' to {rating}.")
 
     def save_movies(self, movies):
+        """Saves the movie data collected from omdb to the csv file and writes
+        instantly with flush to generate the website with new content.
+        """
         with open(self.file_path, mode='w', encoding="utf-8", newline='') as f:
             writer = csv.DictWriter(f, fieldnames=["title", "year", "rating", "poster",
                                                    "note" ])

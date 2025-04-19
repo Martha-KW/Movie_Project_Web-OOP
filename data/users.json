@@ -13,5 +13,15 @@
     "password_hash": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
     "format": "csv",
     "file": "3.csv"
+  },
+  "tobi": {
+    "password_hash": "cd6f33ab869d39460147064d5c5a72f182f7bb9502ed73f8e239a5a62ff69d42",
+    "format": "csv",
+    "file": "tobi.csv"
+  },
+  "raphi": {
+    "password_hash": "69e3dbdf6ff9751ffcfc51e6dadeabe54efe9c984a9fa9c80f15362ce790f390",
+    "format": "json",
+    "file": "raphi.json"
   }
 }

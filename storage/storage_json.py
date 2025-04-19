@@ -20,7 +20,9 @@ class StorageJson(IStorage):
             with open(self.file_path, 'w', encoding="utf-8") as f:
                 json.dump({}, f)
 
+
     def list_movies(self):
+        """Lists the movies stored in the json file to print it"""
         try:
             with open(self.file_path, "r", encoding="utf-8") as f:
                 raw_data = json.load(f)
@@ -41,7 +43,9 @@ class StorageJson(IStorage):
             print("Error: Could not decode JSON.")
             return {}
 
+
     def add_movie(self, title, year, rating, poster):
+        """Adds a new movie to the json file"""
         movies = self.list_movies()
         movies[title] = {
             "year": year,
@@ -50,25 +54,19 @@ class StorageJson(IStorage):
         }
         self.save_movies(movies)
 
+
     def delete_movie(self, title):
+        """Deletes a move from the json file, chosen by user input of the title."""
         movies = self.list_movies()
         if title in movies:
             del movies[title]
             self.save_movies(movies)
 
-    def update_movie(self, title, rating):
-        """Update the rating of an existing movie."""
-        movies = self.list_movies()
-
-        if title not in movies:
-            print(f"Movie '{title}' not found. Cannot update rating.")
-            return False
-
-        movies[title]['rating'] = rating
-        self.save_movies(movies)
-        return True
 
     def save_movies(self, movies):
+        """Saves new data instantly with flush to the json file to ensure new data
+        on the generated web page.
+        """
         with open(self.file_path, 'w', encoding="utf-8") as f:
             json.dump(movies, f, indent=4)
             f.flush()
