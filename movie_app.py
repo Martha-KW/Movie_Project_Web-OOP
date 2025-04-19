@@ -180,11 +180,14 @@ class MovieApp:
 
             item = f"""
             <li>
-                <div class="movie">
-                    <img class="movie-poster" src="{poster}" alt="Poster of {title}" title="{note}" />
-                    <div class="movie-title">{title}</div>
-                    <div class="movie-year">{year}</div>
-                </div>
+            <div class="movie">
+            <div class="tooltip">
+            <img class="movie-poster" src="{poster}" alt="Poster of {title}" />
+            <span class="tooltiptext">{note}</span>
+            </div>
+            <div class="movie-title">{title}</div>
+            <div class="movie-year">{year}</div>
+            </div>
             </li>
             """
             movie_items.append(item)
