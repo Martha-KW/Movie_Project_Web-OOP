@@ -3,23 +3,24 @@
         "year": 1997,
         "rating": 7.9,
         "poster": "https://m.media-amazon.com/images/M/MV5BYzYyN2FiZmUtYWYzMy00MzViLWJkZTMtOGY1ZjgzNWMwN2YxXkEyXkFqcGc@._V1_SX300.jpg",
-        "note": ""
+        "note": "Tragic ending"
     },
     "Minions": {
         "year": 2015,
         "rating": 6.4,
         "poster": "https://m.media-amazon.com/images/M/MV5BODI4NzMyNjE0MF5BMl5BanBnXkFtZTgwMTcwNzI0MzE@._V1_SX300.jpg",
-        "note": ""
+        "note": "Hahahah"
     },
     "Godfather": {
         "year": 2022,
         "rating": 5.2,
         "poster": "https://m.media-amazon.com/images/M/MV5BMDI2OTU2MzctMzYwZC00MjM5LThmNmQtZjRhOWFlMjQ4NjkyXkEyXkFqcGc@._V1_SX300.jpg",
-        "note": ""
+        "note": "watch as next"
     },
     "Forrest Gump": {
         "year": 1994,
         "rating": 8.8,
-        "poster": "https://m.media-amazon.com/images/M/MV5BNDYwNzVjMTItZmU5YS00YjQ5LTljYjgtMjY2NDVmYWMyNWFmXkEyXkFqcGc@._V1_SX300.jpg"
+        "poster": "https://m.media-amazon.com/images/M/MV5BNDYwNzVjMTItZmU5YS00YjQ5LTljYjgtMjY2NDVmYWMyNWFmXkEyXkFqcGc@._V1_SX300.jpg",
+        "note": ""
     }
 }

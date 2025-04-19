@@ -173,13 +173,17 @@ class MovieApp:
 
         # Baue das Movie-HTML
         movie_items = []
-        for title, data in movies.items():  # <- das ist wichtig!
+        for title, data in movies.items():
+            poster = data.get('poster', '')
+            year = data.get('year', '')
+            note = data.get('note', '')
+
             item = f"""
             <li>
                 <div class="movie">
-                    <img class="movie-poster" src="{data.get('poster', '')}" />
+                    <img class="movie-poster" src="{poster}" alt="Poster of {title}" title="{note}" />
                     <div class="movie-title">{title}</div>
-                    <div class="movie-year">{data.get('year')}</div>
+                    <div class="movie-year">{year}</div>
                 </div>
             </li>
             """
