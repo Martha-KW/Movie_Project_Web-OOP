@@ -1,6 +1,7 @@
 # 🎬 Personal Movie App
 
-A feature-rich personal movie database you can use via command line **or** a dynamic web interface. Save, update, and explore your favorite movies — powered by API integration and personalized notes.
+A simple personal movie database you can use via command line. Save, update, and explore your 
+favorite movies — powered by API integration and personalized notes.
 
 ## 💡 Features
 
@@ -9,7 +10,7 @@ A feature-rich personal movie database you can use via command line **or** a dyn
 - **Add Notes**: Add your own comments to each movie
 - **Poster Display**: Movies shown with posters and hover-over comments
 - **Ratings**: Display movie ratings with star icons ⭐
-- **Web Version**: Auto-generated dynamic HTML overview with an individual header, year, 
+- **Web Version**: Auto-generated static HTML overview with an individual header, year, 
   poster, rating & note
 - **Statistics & Random Movie**: Bonus CLI features
 - **Clean OOP Design** 
@@ -26,7 +27,7 @@ cd movie-app
 ### 2. Install requirements:
 
 ```bash
-pip install flask python-dotenv
+pip install python-dotenv
 ```
 
 ### 3. Add your OMDb API Key:
@@ -56,11 +57,10 @@ Then open [http://localhost:5000](http://localhost:5000) in your browser.
 ## 🛠 Technologies Used
 
 - Python 3
-- Flask
 - OMDb API
 - JSON & CSV
 - SHA256 for password hashing
-- HTML/CSS (Google Fonts, responsive layout)
+- HTML/CSS (Google Fonts)
 
 ---
 
@@ -68,7 +68,7 @@ Then open [http://localhost:5000](http://localhost:5000) in your browser.
 
 ```
 movie-app/
-├── app.py               # Web interface with Flask
+├── generate_html.py     # Web site generator
 ├── main.py              # CLI entry point
 ├── movie_app.py         # Core logic & menu
 ├── user_manager.py      # User creation/login
