@@ -7,7 +7,7 @@
     },
     "Harry Potter and the Deathly Hallows: Part 2": {
         "year": 2011,
-        "rating": 8.1,
+        "rating": 8.9,
         "poster": "https://m.media-amazon.com/images/M/MV5BOTA1Mzc2N2ItZWRiNS00MjQzLTlmZDQtMjU0NmY1YWRkMGQ4XkEyXkFqcGc@._V1_SX300.jpg",
         "note": ""
     },
@@ -19,13 +19,31 @@
     },
     "Terminator 2: Judgment Day": {
         "year": 1991,
-        "rating": 8.6,
+        "rating": 8.9,
         "poster": "https://m.media-amazon.com/images/M/MV5BNGMyMGNkMDUtMjc2Ni00NWFlLTgyODEtZTY2MzBiZTg0OWZiXkEyXkFqcGc@._V1_SX300.jpg",
         "note": ""
     },
     "The Hobbit: An Unexpected Journey": {
         "year": 2012,
         "rating": 7.8,
-        "poster": "https://m.media-amazon.com/images/M/MV5BMTcwNTE4MTUxMl5BMl5BanBnXkFtZTcwMDIyODM4OA@@._V1_SX300.jpg"
+        "poster": "https://m.media-amazon.com/images/M/MV5BMTcwNTE4MTUxMl5BMl5BanBnXkFtZTcwMDIyODM4OA@@._V1_SX300.jpg",
+        "note": ""
+    },
+    "Spiderman": {
+        "year": 1990,
+        "rating": 5.6,
+        "poster": "No info available",
+        "note": ""
+    },
+    "Fantastika vs. Wonderwoman": {
+        "year": 1976,
+        "rating": 5.6,
+        "poster": "No info available",
+        "note": ""
+    },
+    "Forrest Gump": {
+        "year": 1994,
+        "rating": 8.8,
+        "poster": "https://m.media-amazon.com/images/M/MV5BNDYwNzVjMTItZmU5YS00YjQ5LTljYjgtMjY2NDVmYWMyNWFmXkEyXkFqcGc@._V1_SX300.jpg"
     }
 }

@@ -43,14 +43,17 @@ class MovieApp:
         if not movie_data:
             input("Press Enter to continue.")
             return
-
-        self._storage.add_movie(
-            movie_data["title"],
-            movie_data["year"],
-            movie_data["rating"],
-            movie_data["poster"]
-        )
-        print(f"Movie '{movie_data['title']}' added.")
+        rating = movie_data.get("rating") or 0.0
+        try:
+            self._storage.add_movie(
+                movie_data["title"],
+                movie_data["year"],
+                movie_data["rating"],
+                movie_data["poster"]
+            )
+            print(f"Movie '{movie_data['title']}' added.")
+        except ValueError as e:
+            print("This movie already exists.")
         input("Press Enter to continue.")
 
 
@@ -121,13 +124,21 @@ class MovieApp:
         avg = statistics.mean(ratings)
         median = statistics.median(ratings)
 
-        best = max(rated_movies.items(), key=lambda item: item[1]["rating"])
-        worst = min(rated_movies.items(), key=lambda item: item[1]["rating"])
+        max_rating = max(rated_movies.items(), key=lambda item: item[1]["rating"])[1]["rating"]
+        min_rating = min(rated_movies.items(), key=lambda item: item[1]["rating"])[1]["rating"]
+
+        best_movies = [title for title, data in rated_movies.items() if
+                       data["rating"] == max_rating]
+        worst_movies = [title for title, data in rated_movies.items() if
+                        data["rating"] == min_rating]
 
         print(f"\nAverage rating: {avg:.2f}")
         print(f"Median rating: {median:.2f}")
-        print(f"Best movie: {best[0]}, {best[1]['rating']:.2f}")
-        print(f"Worst movie: {worst[0]}, {worst[1]['rating']:.2f}")
+        print("Best movie(s):")
+        print('\n'.join(f"- {movie}, {max_rating:.2f}" for movie in
+                        best_movies))
+        print("\nWorst movie(s):")
+        print('\n'.join(f"- {movie}, {min_rating:.2f}" for movie in worst_movies))
         input("\nPress enter to continue.")
 
 

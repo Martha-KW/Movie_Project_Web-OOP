@@ -34,13 +34,12 @@ class StorageCsv(IStorage):
                 }
         return movies
 
-
     def add_movie(self, title, year, rating, poster):
         """Adds a new movie to the csv file"""
         movies = self.list_movies()
         if title in movies:
-            print(f"Movie '{title}' already exists.")
-            return
+            raise ValueError(f"Movie '{title}' already exists.")  # Fehler werfen statt print
+
         with open(self.file_path, mode='a', encoding="utf-8", newline='') as f:
             writer = csv.DictWriter(f, fieldnames=["title", "year", "rating", "poster"])
             writer.writerow({

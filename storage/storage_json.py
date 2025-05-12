@@ -47,6 +47,8 @@ class StorageJson(IStorage):
     def add_movie(self, title, year, rating, poster):
         """Adds a new movie to the json file"""
         movies = self.list_movies()
+        if title in movies:
+            raise ValueError(f"Movie '{title}' already exists!")
         movies[title] = {
             "year": year,
             "rating": rating,
